@@ -9,7 +9,7 @@ from django.http import Http404, HttpResponseRedirect
 from zokiguide.decorators import render_to
 
 #from . import settings
-from . models import Post, Category
+from . models import CatalogPost, CatalogCategory
 from . forms import CatalogEditForm
 
 
@@ -24,7 +24,7 @@ def add( request ):
     if request.session.get( 'catalog-draft-id', '' ) and int( request.session['catalog-draft-id'] ) > 0:
         return redirect( 'catalog-edit', id = request.session['catalog-draft-id'] )
     else:
-        post = Post( status = 'draft', author = User.objects.get( pk = request.user.id ) )
+        post = CatalogPost( status = 'draft', author = User.objects.get( pk = request.user.id ) )
         post.save()
         request.session['catalog-draft-id'] = post.id
         return redirect( 'catalog-edit', id = post.id )
@@ -35,8 +35,8 @@ def category( request, id, slug = None ):
     id = int( id )
 
     try:
-        category = Category.objects.get( pk = id )
-    except Category.DoesNotExist:
+        category = CatalogCategory.objects.get( pk = id )
+    except CatalogCategory.DoesNotExist:
         raise Http404
 
     if category.slug() != slug:
@@ -44,8 +44,8 @@ def category( request, id, slug = None ):
 
     data = {
         'category':category,
-        'posts':Post.objects.filter( category = id )[:10],
-        'categories':Category.objects.all(),
+        'posts':CatalogPost.objects.filter( category = id )[:10],
+        'categories':CatalogCategory.objects.all(),
     }
 
     return data
@@ -55,8 +55,8 @@ def post( request, id, slug = None ):
     id = int( id )
 
     try:
-        post = Post.objects.get( pk = id )
-    except Post.DoesNotExist:
+        post = CatalogPost.objects.get( pk = id )
+    except CatalogPost.DoesNotExist:
         raise Http404
 
     if post.slug() != slug:
@@ -64,7 +64,7 @@ def post( request, id, slug = None ):
 
     data = {
         'post':post,
-        'categories':Category.objects.all(),
+        'categories':CatalogCategory.objects.all(),
     }
 
     return data
@@ -75,8 +75,8 @@ def edit( request, id ):
     id = int( id )
 
     try:
-        post = Post.objects.get( pk = id )
-    except Post.DoesNotExist:
+        post = CatalogPost.objects.get( pk = id )
+    except CatalogPost.DoesNotExist:
         raise Http404
 
     if request.method == "POST":

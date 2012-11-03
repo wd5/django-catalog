@@ -8,11 +8,11 @@ from location.models import Country, City
 
 # Create your models here.
 
-class Category( CommonCategory ):
+class CatalogCategory( CommonCategory ):
     pass
 
-class Post( CommonPost ):
-    category = models.ManyToManyField( Category )
+class CatalogPost( CommonPost ):
+    category = models.ManyToManyField( CatalogCategory )
     country = models.ForeignKey( Country, blank = True, null = True, )
     city = ChainedForeignKey( 
         City,
@@ -24,9 +24,9 @@ class Post( CommonPost ):
 #    city = models.ForeignKey( City, blank = True, null = True, )
 
 
-class PostImages( models.Model ):
-    post = models.ForeignKey( Post )
-    image = models.ImageField( 
-        upload_to = settings.APPPATH + 'catalog/uploads/'
-    )
-    description = models.CharField( max_length = 200 )
+#class PostImages( models.Model ):
+#    post = models.ForeignKey( Post )
+#    image = models.ImageField(
+#        upload_to = settings.APPPATH + 'catalog/uploads/'
+#    )
+#    description = models.CharField( max_length = 200 )

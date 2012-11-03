@@ -2,7 +2,7 @@ from django.contrib import admin
 
 
 from common.admin import CommonPostAdmin, CommonCategooryAdmin
-from . models import Category, Post
+from . models import CatalogCategory, CatalogPost
 
 class CategoryAdmin( CommonCategooryAdmin ):
     pass
@@ -10,5 +10,5 @@ class CategoryAdmin( CommonCategooryAdmin ):
 class PostAdmin( CommonPostAdmin ):
     list_display = ( 'title', 'author', 'date_edit', 'date_add', 'status', 'country', 'city', )
 
-admin.site.register( Category, CategoryAdmin )
-admin.site.register( Post, PostAdmin )
+admin.site.register( CatalogCategory, CategoryAdmin )
+admin.site.register( CatalogPost, PostAdmin )

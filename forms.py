@@ -3,11 +3,11 @@ from django.contrib.admin.widgets import FilteredSelectMultiple
 
 
 from common.forms import CommonPostEditForm
-from . models import Post, Category
+from . models import CatalogPost, CatalogCategory
 
 class CatalogEditForm( CommonPostEditForm ):
     category = forms.ModelMultipleChoiceField( 
-        queryset = Category.objects.all(),
+        queryset = CatalogCategory.objects.all(),
         required = False,
         widget = FilteredSelectMultiple( 
             'categories',
@@ -16,4 +16,4 @@ class CatalogEditForm( CommonPostEditForm ):
     )
 
     class Meta( CommonPostEditForm.Meta ):
-        model = Post
+        model = CatalogPost
