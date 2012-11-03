@@ -1,2 +1,3 @@
 django-catalog
 ==============
+with countries
