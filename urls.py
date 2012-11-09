@@ -7,5 +7,6 @@ urlpatterns = patterns( 'catalog',
     url( r'^edit/(?P<id>\d+)$', 'views.edit', name = 'catalog-edit' ),
     url( r'^category-(?P<id>\d+)(?:\-(?P<slug>[\w\-]+))?', 'views.category', name = 'catalog-category' ),
     url( r'^post-(?P<id>\d+)(?:\-(?P<slug>[\w\-]+))?', 'views.post', name = 'catalog-post' ),
+    url( r'^file/$', 'views.file', name = 'catalog-file' ),
  )
 

@@ -9,8 +9,8 @@ from django.http import Http404, HttpResponseRedirect
 from zokiguide.decorators import render_to
 
 #from . import settings
-from . models import CatalogPost, CatalogCategory
-from . forms import CatalogEditForm
+from . models import CatalogPost, CatalogCategory, CatalogPostImages
+from . forms import CatalogEditForm, ImageUploadForm
 
 
 
@@ -94,3 +94,25 @@ def edit( request, id ):
         'form':form
     }
     return data
+
+@render_to( 'catalog/file.html' )
+def file( request ):
+    form = ImageUploadForm()
+#    post = CatalogPostImages.objects.get( pk = 1 )
+
+    if request.method == "POST":
+        form = ImageUploadForm( request.POST, request.FILES )
+        if form.is_valid:
+            form.save()
+    else:
+        form = ImageUploadForm()
+
+
+    images = CatalogPostImages.objects.filter( post = 1 )
+
+    data = {
+        'form':form,
+        'images':images,
+    }
+    return data
+
