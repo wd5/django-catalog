@@ -95,10 +95,13 @@ def edit( request, id ):
     else:
         form = CatalogEditForm( instance = post )
 
+    images = CatalogPostImages.objects.filter( post = post )
+
     data = {
         'post':post,
         'form':form,
-        'image_upload_form':ImageUploadForm( initial = {'post':post} )
+        'image_upload_form':ImageUploadForm( initial = {'post':post} ),
+        'images':images,
     }
     return data
 
