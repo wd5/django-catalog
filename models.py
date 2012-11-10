@@ -12,7 +12,6 @@ from location.models import Country, City
 # Create your models here.
 
 def image_upload_to( instance, filename ):
-    filename
     return 'catalog/%s/%s' % ( instance.post.id, filename )
 
 

@@ -8,5 +8,6 @@ urlpatterns = patterns( 'catalog',
     url( r'^category-(?P<id>\d+)(?:\-(?P<slug>[\w\-]+))?', 'views.category', name = 'catalog-category' ),
     url( r'^post-(?P<id>\d+)(?:\-(?P<slug>[\w\-]+))?', 'views.post', name = 'catalog-post' ),
     url( r'^file/$', 'views.file', name = 'catalog-file' ),
+    url( r'^ajax/image-upload/$', 'ajax.image_upload', name = 'catalog-ajax-image-upload' ),
  )
 

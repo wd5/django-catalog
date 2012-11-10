@@ -20,7 +20,12 @@ class CatalogEditForm( CommonPostEditForm ):
 
 
 class ImageUploadForm( forms.ModelForm ):
+    post = forms.ModelChoiceField( 
+        queryset = CatalogPost.objects.all(),
+        widget = forms.HiddenInput()
+    )
     class Meta:
         model = CatalogPostImages
+#        fields = ( 'image', 'description' )
 #    title = forms.CharField( max_length = 50 )
 #    file = forms.ImageField()

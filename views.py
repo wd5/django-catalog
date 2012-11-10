@@ -74,6 +74,11 @@ def post( request, id, slug = None ):
 def edit( request, id ):
     id = int( id )
 
+    import logging
+    # Get an instance of a logger
+    logger = logging.getLogger( 'zoki' )
+    logger.debug( id )
+
     try:
         post = CatalogPost.objects.get( pk = id )
     except CatalogPost.DoesNotExist:
@@ -91,21 +96,23 @@ def edit( request, id ):
         form = CatalogEditForm( instance = post )
 
     data = {
-        'form':form
+        'post':post,
+        'form':form,
+        'image_upload_form':ImageUploadForm( initial = {'post':post} )
     }
     return data
 
 @render_to( 'catalog/file.html' )
 def file( request ):
-    form = ImageUploadForm()
-#    post = CatalogPostImages.objects.get( pk = 1 )
+#    form = ImageUploadForm()
+    post = CatalogPostImages.objects.get( pk = 1 )
 
     if request.method == "POST":
         form = ImageUploadForm( request.POST, request.FILES )
         if form.is_valid:
             form.save()
     else:
-        form = ImageUploadForm()
+        form = ImageUploadForm( initial = {'post':post} )
 
 
     images = CatalogPostImages.objects.filter( post = 1 )
