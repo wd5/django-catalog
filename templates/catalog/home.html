@@ -6,11 +6,14 @@
 			<div class="span3">
     			{% include 'catalog/common/categories.html' with categories=categories %}
     		</div>
-    		<div class="span9">
+    		<div class="span6">
     			<div id="content">
     				{% include 'catalog/common/posts.html' with posts=posts %}
     			</div>
     		</div>
+    		<div class="span3">
+                {% include 'catalog/common/categories.html' with categories=categories %}
+            </div>
 		</div>
 	</div>
 {% endblock %}
