@@ -16,6 +16,7 @@ class CatalogEditForm( CommonPostEditForm ):
     )
 
     class Meta( CommonPostEditForm.Meta ):
+        fields = ( 'title', 'content', 'category', 'source', 'tags', 'country', 'city', )
         model = CatalogPost
 
 
@@ -24,8 +25,6 @@ class ImageUploadForm( forms.ModelForm ):
         queryset = CatalogPost.objects.all(),
         widget = forms.HiddenInput()
     )
+
     class Meta:
         model = CatalogPostImages
-#        fields = ( 'image', 'description' )
-#    title = forms.CharField( max_length = 50 )
-#    file = forms.ImageField()

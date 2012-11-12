@@ -54,16 +54,16 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery/plugins/jquery.form.js"></script>
     <script type="text/javascript">
         jQuery(function(){
-            $('#image-upload-form').ajaxForm({
-                success:function(data){
-                    log(data)
-                    $('<img>')
-                        .attr('src', data.image.x100)
-                        .data('x450', data.image.x450)
-                        .prependTo('#post-images');
-                }
-            });
-            
+            // $('#image-upload-form').ajaxForm({
+                // success:function(data){
+                    // log(data)
+                    // $('<img>')
+                        // .attr('src', data.image.x100)
+                        // .data('x450', data.image.x450)
+                        // .prependTo('#post-images');
+                // }
+            // });
+//             
             // log($('#id_content').data())
             
             $('#post-images').find('img').live('click', function(){
