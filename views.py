@@ -134,11 +134,6 @@ def post( request, id, slug = None ):
 def edit( request, id ):
     id = int( id )
 
-    import logging
-    # Get an instance of a logger
-    logger = logging.getLogger( 'zoki' )
-    logger.debug( id )
-
     try:
         post = CatalogPost.objects.get( pk = id )
     except CatalogPost.DoesNotExist:
