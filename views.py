@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.db.models import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.views.decorators.cache import cache_page
 
@@ -16,7 +16,6 @@ from . models import CatalogPost, CatalogCategory, CatalogPostImages
 from . forms import CatalogEditForm, ImageUploadForm
 from common.utils import log
 from location.models import Country, City
-
 
 
 def get_categories():
@@ -33,7 +32,7 @@ def get_countries( category = None ):
 #    log( countries )
     return countries
 
-def get_posts( category = None, country = None, city = None ):
+def get_posts( category = None, country = None, city = None, page = None ):
     posts = CatalogPost.objects.filter( status = 'active' )
 
     if category:
@@ -45,26 +44,36 @@ def get_posts( category = None, country = None, city = None ):
     if city:
         posts = posts.filter( city = city )
 
-    posts = posts[:10]
+    paginator = Paginator( posts, 7 )
+
+    try:
+        posts = paginator.page( page )
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        posts = paginator.page( 1 )
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        posts = paginator.page( paginator.num_pages )
 
     return posts
 
-@cache_page( 60 * 15 )
+#@cache_page( 60 * 15 )
 @render_to( 'catalog/home.html' )
-def home( request ):
+def home( request, country = None, city = None, page = None ):
+
     countries = get_countries()
     categories = get_categories()
-    posts = get_posts()
+    posts = get_posts( country = country, city = city, page = page )
 
     data = {
-        'countries':countries,
-        'categories':categories,
-        'posts':posts,
+        'countries' : countries,
+        'categories' : categories,
+        'posts' : posts,
     }
     return data
 
-@render_to( 'catalog/category.html' )
-def category( request, id, slug = None ):
+@render_to( 'catalog/home.html' )
+def category( request, id, slug = None, country = None, city = None, page = None ):
 
     id = int( id )
 
@@ -78,12 +87,13 @@ def category( request, id, slug = None ):
 
     countries = get_countries( category )
     categories = get_categories()
-    posts = get_posts( category = category )
+    posts = get_posts( category = category, country = country, city = city, page = page )
 
     data = {
         'category':category,
         'posts':posts,
         'categories':categories,
+        'countries' : countries,
     }
 
     return data
