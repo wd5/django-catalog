@@ -1,6 +1,9 @@
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render_to_response
+
+from django.forms.models import inlineformset_factory
+
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.db.models import ObjectDoesNotExist
@@ -8,8 +11,6 @@ from django.http import Http404, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.views.decorators.cache import cache_page
-
-from zokiguide.decorators import render_to
 
 #from . import settings
 from . models import CatalogPost, CatalogCategory, CatalogPostImages
@@ -19,7 +20,7 @@ from location.models import Country, City
 
 
 def get_categories():
-    return CatalogCategory.objects.all()
+    return CatalogCategory.objects.get_query_set()
 
 def get_countries( category = None ):
 #    log( category )
@@ -58,7 +59,7 @@ def get_posts( category = None, country = None, city = None, page = None ):
     return posts
 
 #@cache_page( 60 * 15 )
-@render_to( 'catalog/home.html' )
+#@render_to( 'catalog/home.html' )
 def home( request, country = None, city = None, page = None ):
 
     countries = get_countries()
@@ -70,9 +71,9 @@ def home( request, country = None, city = None, page = None ):
         'categories' : categories,
         'posts' : posts,
     }
-    return data
+    return render_to_response( 'catalog/home.html', data )
 
-@render_to( 'catalog/home.html' )
+#@render_to( 'catalog/home.html' )
 def category( request, id, slug = None, country = None, city = None, page = None ):
 
     id = int( id )
@@ -96,7 +97,7 @@ def category( request, id, slug = None, country = None, city = None, page = None
         'countries' : countries,
     }
 
-    return data
+    return render_to_response( 'catalog/home.html', data )
 
 @login_required
 def add( request ):
@@ -110,7 +111,7 @@ def add( request ):
 
 
 
-@render_to( 'catalog/post.html' )
+#@render_to( 'catalog/post.html' )
 def post( request, id, slug = None ):
     id = int( id )
 
@@ -127,10 +128,10 @@ def post( request, id, slug = None ):
         'categories':CatalogCategory.objects.all(),
     }
 
-    return data
+    return render_to_response( 'catalog/post.html', data )
 
 @login_required
-@render_to( 'catalog/edit.html' )
+#@render_to( 'catalog/edit.html' )
 def edit( request, id ):
     id = int( id )
 
@@ -158,9 +159,9 @@ def edit( request, id ):
         'image_upload_form':ImageUploadForm( initial = {'post':post} ),
         'images':images,
     }
-    return data
+    return render_to_response( 'catalog/edit.html', data )
 
-@render_to( 'catalog/file.html' )
+#@render_to( 'catalog/file.html' )
 def file( request ):
 #    form = ImageUploadForm()
     post = CatalogPostImages.objects.get( pk = 1 )
@@ -179,5 +180,5 @@ def file( request ):
         'form':form,
         'images':images,
     }
-    return data
+    return render_to_response( 'catalog/file.html', data )
 
