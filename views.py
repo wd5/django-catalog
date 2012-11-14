@@ -1,16 +1,12 @@
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render_to_response
-
-from django.forms.models import inlineformset_factory
-
-from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.db.models import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from django.views.decorators.cache import cache_page
+#from django.views.decorators.cache import cache_page
 
 #from . import settings
 from . models import CatalogPost, CatalogCategory, CatalogPostImages
@@ -58,8 +54,6 @@ def get_posts( category = None, country = None, city = None, page = None ):
 
     return posts
 
-#@cache_page( 60 * 15 )
-#@render_to( 'catalog/home.html' )
 def home( request, country = None, city = None, page = None ):
 
     countries = get_countries()
@@ -71,7 +65,7 @@ def home( request, country = None, city = None, page = None ):
         'categories' : categories,
         'posts' : posts,
     }
-    return render_to_response( 'catalog/home.html', data )
+    return render( request, 'catalog/home.html', data )
 
 #@render_to( 'catalog/home.html' )
 def category( request, id, slug = None, country = None, city = None, page = None ):
@@ -97,7 +91,7 @@ def category( request, id, slug = None, country = None, city = None, page = None
         'countries' : countries,
     }
 
-    return render_to_response( 'catalog/home.html', data )
+    return render( request, 'catalog/home.html', data )
 
 @login_required
 def add( request ):
@@ -109,9 +103,6 @@ def add( request ):
         request.session['catalog-draft-id'] = post.id
         return redirect( 'catalog-edit', id = post.id )
 
-
-
-#@render_to( 'catalog/post.html' )
 def post( request, id, slug = None ):
     id = int( id )
 
@@ -128,10 +119,9 @@ def post( request, id, slug = None ):
         'categories':CatalogCategory.objects.all(),
     }
 
-    return render_to_response( 'catalog/post.html', data )
+    return render( request, 'catalog/post.html', data )
 
 @login_required
-#@render_to( 'catalog/edit.html' )
 def edit( request, id ):
     id = int( id )
 
@@ -159,11 +149,10 @@ def edit( request, id ):
         'image_upload_form':ImageUploadForm( initial = {'post':post} ),
         'images':images,
     }
-    return render_to_response( 'catalog/edit.html', data )
+    return render( request, 'catalog/edit.html', data )
 
-#@render_to( 'catalog/file.html' )
 def file( request ):
-#    form = ImageUploadForm()
+
     post = CatalogPostImages.objects.get( pk = 1 )
 
     if request.method == "POST":
@@ -180,5 +169,5 @@ def file( request ):
         'form':form,
         'images':images,
     }
-    return render_to_response( 'catalog/file.html', data )
+    return render( request, 'catalog/file.html', data )
 
