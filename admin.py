@@ -1,10 +1,10 @@
 from django.contrib import admin
 
 
-from common.admin import CommonPostAdmin, CommonCategooryAdmin
+from common.admin import CommonPostAdmin, CommonCategoryAdmin
 from . models import CatalogCategory, CatalogPost
 
-class CatalogCategoryAdmin( CommonCategooryAdmin ):
+class CatalogCategoryAdmin( CommonCategoryAdmin ):
     pass
 
 class CatalogPostAdmin( CommonPostAdmin ):
