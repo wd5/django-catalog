@@ -67,7 +67,7 @@ def home( request, country = None, city = None, page = None ):
     }
     return render( request, 'catalog/home.html', data )
 
-#@render_to( 'catalog/home.html' )
+
 def category( request, id, slug = None, country = None, city = None, page = None ):
 
     id = int( id )
