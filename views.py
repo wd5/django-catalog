@@ -130,6 +130,8 @@ def edit( request, id ):
     except CatalogPost.DoesNotExist:
         raise Http404
 
+    form = CatalogEditForm( instance = post )
+
     if request.method == "POST":
         form = CatalogEditForm( request.POST, instance = post )
         if form.is_valid:
@@ -137,9 +139,9 @@ def edit( request, id ):
             post.status = 'active'
             post.save()
 
+            del request.session['catalog-draft-id']
+
             return redirect( 'catalog-post', id = id )
-    else:
-        form = CatalogEditForm( instance = post )
 
     images = CatalogPostImages.objects.filter( post = post )
 
