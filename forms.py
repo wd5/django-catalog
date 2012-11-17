@@ -16,6 +16,7 @@ class CatalogEditForm( CommonPostEditForm ):
     )
 
     class Meta( CommonPostEditForm.Meta ):
+        model = CatalogPost
         fields = ( 
             'title',
             'content',
@@ -32,7 +33,7 @@ class CatalogEditForm( CommonPostEditForm ):
             'twitter',
             'tags',
         )
-        model = CatalogPost
+
 
 
 class ImageUploadForm( forms.ModelForm ):
