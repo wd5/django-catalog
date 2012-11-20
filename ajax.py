@@ -30,6 +30,7 @@ def image_upload( request ):
             'id':image.id,
             'x100':image.x100.url,
             'x150':image.x150.url,
+            'x138':image.x138.url,
             'x450':image.x450.url,
         },
     }

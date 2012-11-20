@@ -41,12 +41,14 @@
 	    		</div>
 	    		<div class="well" id="post-images">
 	    		    <ul class="thumbnails">
-	    		    {% for image in images %}
+                        {% for image in images %}
+                            {% if image %}
                             <li data-id="{{ image.id }}" data-x450="{{ image.x450.url }}" >
                                 <a href="#" class="thumbnail">
                                     <img src="{{ image.x138.url }}" data-x450="{{ image.x450.url }}" />
                                 </a>
                             </li>
+                            {% endif %}
     	    		    {% empty %}
     	    		    {% endfor %}
 	    		    </ul>
@@ -64,16 +66,24 @@
             $(function(){
                 $('#image-upload-form').ajaxForm({                                                                                                                                                                  
                     success:function(data){
-                        $('<img>')
-                            .attr('src', data.image.x100)
-                            .data('x450', data.image.x450)
-                            .prependTo('#post-images');
+                        
+                        $('#post-images .thumbnails').prepend(function(){
+                            return $('<li/>')
+                                .data('id', data.image.id)
+                                .data('x450', data.image.x450)
+                                .append(function(){
+                                    return $('<a href="#" class="thumbnail"/>')
+                                        .append(function(){
+                                            return $('<img/>')
+                                                .attr('src', data.image.x138);
+                                        });
+                                });
+                        });
                     }
                 });
                 
                 $('#post-images li')
-                    .on('mouseenter', function(){
-                        // log('mouseenter')
+                    .live('mouseenter', function(){
                         var self = $(this);
                         $(this)                            
                             .append(function(){
@@ -109,18 +119,17 @@
                                 }
                             });
                     })
-                    .on('mouseleave', function(){
-                        // log('mouseleave')
+                    .live('mouseleave', function(){                        
                         if( $('.image-link-block', $(this)).size() )
                         {
                             $('.image-link-block', $(this)).remove();
                         }
                     });
-    
+
                 $('#post-images').find('img').live('click', function(){
                     tinymce.execCommand('mceInsertContent', false, '<img src="'+$(this).data('x450')+'" alt="" class="post-image" />');                
                 })
-            });    
+            });
         })(jQuery || django.jQuery);
     </script>
 {% endblock %}
