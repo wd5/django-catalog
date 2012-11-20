@@ -72,6 +72,7 @@ class CatalogPost( CommonPost ):
         blank = True,
         help_text = u'full URL to your account with http://',
     )
+    image = models.ForeignKey( 'CatalogPostImages', blank = True, null = True )
 
 class CatalogPostImages( CommonPostImage ):
     post = models.ForeignKey( 
@@ -79,3 +80,13 @@ class CatalogPostImages( CommonPostImage ):
         related_name = "%(app_label)s_%(class)s_related",
     )
     image = models.ImageField( upload_to = image_upload_to )
+    x138 = ImageSpecField( [
+            Adjust( contrast = 1.2, sharpness = 1.1 ),
+            ResizeToFit( 138, 138 )
+        ],
+        image_field = 'image',
+        options = {
+            'quality': 90,
+            'progressive':True,
+        }
+    )

@@ -35,3 +35,29 @@ def image_upload( request ):
     }
 
     return data
+
+@login_required
+@render_to_json
+def primary( request ):
+
+    post_id = int( request.POST['post_id'] )
+    image_id = int( request.POST['image_id'] )
+
+    try:
+        post = CatalogPost.objects.get( pk = post_id )
+    except CatalogPost.DoesNotExist:
+        raise Http404
+
+    try:
+        image = CatalogPostImages.objects.get( pk = image_id )
+    except CatalogPostImages.DoesNotExist:
+        raise Http404
+
+    post.image = image
+    post.save()
+
+    data = {
+        'result':'ok',
+    }
+
+    return data
