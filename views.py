@@ -93,16 +93,6 @@ def category( request, id, slug = None, country = None, city = None, page = None
 
     return render( request, 'catalog/home.html', data )
 
-@login_required
-def add( request ):
-    if request.session.get( 'catalog-draft-id', '' ) and int( request.session['catalog-draft-id'] ) > 0:
-        return redirect( 'catalog-edit', id = request.session['catalog-draft-id'] )
-    else:
-        post = CatalogPost( status = 'draft', author = User.objects.get( pk = request.user.id ) )
-        post.save()
-        request.session['catalog-draft-id'] = post.id
-        return redirect( 'catalog-edit', id = post.id )
-
 def post( request, id, slug = None ):
     id = int( id )
 
@@ -122,6 +112,17 @@ def post( request, id, slug = None ):
     return render( request, 'catalog/post.html', data )
 
 @login_required
+def add( request ):
+    if request.session.get( 'catalog-draft-id', '' ) and int( request.session['catalog-draft-id'] ) > 0:
+        return redirect( 'catalog-edit', id = request.session['catalog-draft-id'] )
+    else:
+        post = CatalogPost( status = 'draft', author = User.objects.get( pk = request.user.id ) )
+        post.save()
+        request.session['catalog-draft-id'] = post.id
+        return redirect( 'catalog-edit', id = post.id )
+
+
+@login_required
 def edit( request, id ):
     id = int( id )
 
@@ -129,6 +130,11 @@ def edit( request, id ):
         post = CatalogPost.objects.get( pk = id )
     except CatalogPost.DoesNotExist:
         raise Http404
+    
+    user = User.objects.get( pk = request.user.id )
+
+    if post.author != user.id:
+        return redirect( '/accounts/login' )
 
     form = CatalogEditForm( instance = post )
 
