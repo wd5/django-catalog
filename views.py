@@ -91,7 +91,7 @@ def category( request, id, slug = None, country = None, city = None, page = None
         'countries' : countries,
     }
 
-    return render( request, 'catalog/home.html', data )
+    return render( request, 'catalog/category.html', data )
 
 def post( request, id, slug = None ):
     id = int( id )
@@ -145,7 +145,10 @@ def edit( request, id ):
             post.status = 'active'
             post.save()
 
-            del request.session['catalog-draft-id']
+            try:
+                del request.session['catalog-draft-id']
+            except :
+                pass
 
             return redirect( 'catalog-post', id = id )
 

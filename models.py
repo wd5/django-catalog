@@ -80,13 +80,4 @@ class CatalogPostImages( CommonPostImage ):
         related_name = "%(app_label)s_%(class)s_related",
     )
     image = models.ImageField( upload_to = image_upload_to )
-    x138 = ImageSpecField( [
-            Adjust( contrast = 1.2, sharpness = 1.1 ),
-            ResizeToFit( 138, 138 )
-        ],
-        image_field = 'image',
-        options = {
-            'quality': 90,
-            'progressive':True,
-        }
-    )
+
