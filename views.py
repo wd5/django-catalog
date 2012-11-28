@@ -116,7 +116,10 @@ def add( request ):
     if request.session.get( 'catalog-draft-id', '' ) and int( request.session['catalog-draft-id'] ) > 0:
         return redirect( 'catalog-edit', id = request.session['catalog-draft-id'] )
     else:
-        post = CatalogPost( status = 'draft', author = User.objects.get( pk = request.user.id ) )
+        post = CatalogPost( 
+            status = 'draft',
+            author = User.objects.get( pk = request.user.id )
+        )
         post.save()
         request.session['catalog-draft-id'] = post.id
         return redirect( 'catalog-edit', id = post.id )
@@ -130,11 +133,11 @@ def edit( request, id ):
         post = CatalogPost.objects.get( pk = id )
     except CatalogPost.DoesNotExist:
         raise Http404
-    
+
     user = User.objects.get( pk = request.user.id )
 
-    if post.author != user.id:
-        return redirect( '/accounts/login' )
+    if post.author.id != user.id:
+        return redirect( '/accounts/login/' )
 
     form = CatalogEditForm( instance = post )
 

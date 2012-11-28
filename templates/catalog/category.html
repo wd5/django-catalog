@@ -1,4 +1,4 @@
-{% extends "catalog/catalog.html" %}
+{% extends "catalog/_catalog.html" %}
 
 {% block title %}
 	{{ category.title }} / {{ block.super }}
@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="span3">
-                {% include 'catalog/common/categories.html' with categories=categories %}
+                {% include 'catalog/common/categories.html' with categories=categories category=category %}
             </div>
             <div class="span6">
                 <div id="content">
