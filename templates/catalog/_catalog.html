@@ -4,5 +4,10 @@
 {% block title %} {% trans 'Catalog' %} / {% endblock %}
 
 {% block module_name %}{% trans 'Catalog' %}{% endblock %}
-{% block module_description %}{% endblock %}
-{% block module_actions %}{% endblock %}
+
+{% block module_description %}
+	{% trans 'of travel service providers around the world' %}
+{% endblock %}
+{% block module_actions %}
+    <a href="{% url catalog-add %}" class="btn btn-large">{% trans 'Add catalog entry' %}</a>
+{% endblock %}
