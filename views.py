@@ -72,24 +72,50 @@ def category( request, id, slug = None, country = None, city = None, page = None
 
     id = int( id )
 
+    data = {}
+
+    log( 'city', str( city ) )
+
     try:
-        category = CatalogCategory.objects.get( pk = id )
+        data['category'] = category = CatalogCategory.objects.get( pk = id )
     except CatalogCategory.DoesNotExist:
         raise Http404
 
     if category.slug() != slug:
         return redirect( 'catalog-category', id = id, slug = category.slug(), permanent = True )
 
-    countries = get_countries( category )
-    categories = get_categories()
-    posts = get_posts( category = category, country = country, city = city, page = page )
 
-    data = {
-        'category':category,
-        'posts':posts,
-        'categories':categories,
-        'countries' : countries,
-    }
+    if country:
+        country = int( country )
+        try:
+            data['country'] = country = Country.objects.get( pk = country )
+        except Country.DoesNotExist:
+            raise Http404
+
+        if city:
+            city = int( city )
+            try:
+                data['city'] = city = City.objects.get( pk = city )
+            except City.DoesNotExist:
+                raise Http404
+
+        data['cities'] = City.objects.filter( country = country )
+
+
+    data['countries'] = get_countries( category )
+    data['categories'] = get_categories()
+    data['posts'] = get_posts( category = category, country = country, city = city, page = page )
+
+
+#    data = {
+#        'category':category,
+#        'posts':posts,
+#        'categories':categories,
+#        'countries' : countries,
+#        'country':country,
+#        'city':city,
+#        'cities':cities,
+#    }
 
     return render( request, 'catalog/category.html', data )
 
