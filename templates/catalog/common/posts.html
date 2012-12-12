@@ -1,6 +1,6 @@
 	{% for post in posts %}
 		<div>
-			<h2><a href="{% url catalog-post id=post.id slug=post.slug %}">{{ post.title }}</a></h2>
+			<h4><a href="{% url catalog-post id=post.id slug=post.slug %}">{{ post.title }}</a></h4>
 			<div class="clearfix">
     			{% if post.image %}
         			<a href="{% url catalog-post id=post.id slug=post.slug %}" class="thumbnail" style="width:150px; float: left; text-align: center; margin:0px 5px 5px 0px;">
@@ -9,7 +9,7 @@
     			{% endif %}
     			<p>{{ post.snippet }}</p>
     		</div>
-			
+
 		</div>
 	{% empty %}
 		{% include 'common/no-entries.html' %}
