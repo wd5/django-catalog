@@ -1,8 +1,10 @@
 {% extends "catalog/_catalog.html" %}
+{% load i18n %}
 
 {% block title %}
     {{ post.title }} / {{ block.super }}
 {% endblock %}
+
 
 
 {% block content %}
@@ -22,7 +24,59 @@
     			</div>
     		</div>
             <div class="span3">
-
+                <div>
+					<table class="table table-hover">
+                        <tr>
+                            <th colspan="2"><h5 class="text-center">{% trans 'location' %}</h5></th>
+                        </tr>
+						<tr>
+							<th>{% trans 'country'|title %}</th>
+							<td>{{  post.country }} </td>
+						</tr>
+						<tr>
+							<th>{% trans 'city'|title %}</th>
+							<td>{{ post.city }}</td>
+						</tr>
+						<tr>
+							<th>{% trans 'address'|title %}</th>
+							<td>{{ post.address }}</td>
+						</tr>
+                        <tr>
+                            <th colspan="2"><h5 class="text-center">{% trans 'contacts' %}</h5></th>
+                        </tr>
+						<tr>
+							<th>{% trans 'email'|title %}</th>
+							<td>{{ post.email }}</td>
+						</tr>
+						<tr>
+							<th>{% trans 'phone'|title %}</th>
+							<td>{{ post.phone }}</td>
+						</tr>
+						<tr>
+							<th>Skype</th>
+							<td>{{ post.skype }}</td>
+						</tr>
+						<tr>
+							<th>{% trans 'site'|title %}</th>
+							<td>{{ post.site }}</td>
+						</tr>
+                        <tr>
+                            <th colspan="2"><h5 class="text-center">{% trans 'social network' %}</h5></th>
+                        </tr>
+						<tr>
+							<th>Facebook</th>
+							<td>{{ post.facebook }}</td>
+						</tr>
+						<tr>
+							<th>Twitter</th>
+							<td>{{ post.twitter }}</td>
+						</tr>
+						<tr>
+							<th>Google+</th>
+							<td>{{ post.google_plus }}</td>
+						</tr>
+					</table>
+                </div>
             </div>
     	</div>
     </div>
